@@ -28,7 +28,7 @@ module mkOverlayer(Vector#(n, t) init, Overlayer#(n, s, t) ifc)
 
     // Average src into dst.
     function t addin(t src, t dst);
-        return (src >> valueof(TLog#(TDiv#(n, s)))) + dst;
+        return (src >> valueOf(TLog#(TDiv#(n, s)))) + dst;
     endfunction
 
     rule shiftout (True);

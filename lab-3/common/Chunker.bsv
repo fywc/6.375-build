@@ -23,7 +23,7 @@ module mkChunker(Chunker#(n, t))
         let npending = pending;
         npending[index] = x;
 
-        if (index == fromInteger(valueof(n)-1)) begin
+        if (index == fromInteger(valueOf(n)-1)) begin
             outfifo.enq(npending);
             index <= 0;
         end else begin
