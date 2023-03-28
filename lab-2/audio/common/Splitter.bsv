@@ -19,7 +19,7 @@ module mkSplitter(Splitter#(n, t))
     rule iterate (True);
         outfifo.enq(infifo.first()[index]);
         
-        if (index == fromInteger(valueof(n)-1)) begin
+        if (index == fromInteger(valueOf(n)-1)) begin
             infifo.deq();
             index <= 0;
         end else begin
