@@ -4,10 +4,15 @@ import Counter::*;
 import AudioPipeline::*;
 import AudioProcessorTypes::*;
 
+import GetPut::*;
+
+typedef 2 FACTOR;
+
 (* synthesize *)
 module mkTestDriver (Empty);
 
-    AudioProcessor pipeline <- mkAudioPipeline();
+    SettableAudioProcessor#(ISIZE, FSIZE) settable_pipeline <- mkAudioPipeline();
+    AudioProcessor pipeline <- settable_pipeline.audioprocessor;
 
     Reg#(File) m_in <- mkRegU();
     Reg#(File) m_out <- mkRegU();
@@ -20,6 +25,7 @@ module mkTestDriver (Empty);
     rule init(!m_inited);
         m_inited <= True;
 
+        settable_pipeline.setFactor.put(fromInteger(valueOf(FACTOR)));
         File in <- $fopen("in.pcm", "rb");
         if (in == InvalidFile) begin
             $display("couldn't open in.pcm");

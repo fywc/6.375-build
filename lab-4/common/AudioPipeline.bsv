@@ -25,7 +25,8 @@ typedef 16 ISIZE;
 typedef 16 FSIZE;
 typedef 16 PSIZE;
 
-module mkAudioPipeline(AudioProcessor);
+(* synthesize *)
+module mkAudioPipeline(SettableAudioProcessor#(ISIZE, FSIZE));
 
     AudioProcessor fir <- mkFIRFilter(c);
     Chunker#(S, Sample) chunker <- mkChunker();
@@ -37,8 +38,10 @@ module mkAudioPipeline(AudioProcessor);
 
     ToMP#(N, ISIZE, FSIZE, PSIZE) tomp <- mkToMP();
 
-    FixedPoint#(isize, fsize) factor = fromInteger(valueOf(FACTOR));
-    PitchAdjust#(N, ISIZE, FSIZE, PSIZE) pitch_adjust <- mkPitchAdjust(valueOf(S), factor);
+    // FixedPoint#(isize, fsize) factor = fromInteger(valueOf(FACTOR));
+    // PitchAdjust#(N, ISIZE, FSIZE, PSIZE) pitch_adjust <- mkPitchAdjust(valueOf(S), factor);
+    SettablePitchAdjust#(N, ISIZE, FSIZE, PSIZE) pitch <- mkPitchAdjust(valueOf(S));
+    PitchAdjust#(N, ISIZE, FSIZE, PSIZE) pitch_adjust = pitch.adjust;
 
     FromMP#(N, ISIZE, FSIZE, PSIZE) frommp <- mkFromMP();
 
